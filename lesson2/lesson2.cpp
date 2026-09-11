@@ -34,6 +34,49 @@ void selection_sort(vector<int> &vec)
     }
 }
 
+void merge(vector<int> &vec, int start, int mid, int end)
+{
+    vector<int> temp;
+    int l = start;
+    int r = mid + 1;
+    while (l <= mid && r <= end)
+    {
+        if (vec[l] <= vec[r])
+        {
+            temp.push_back(vec[l]);
+            ++l;
+        }
+        else
+        {
+            temp.push_back(vec[r]);
+            ++r;
+        }
+    }
+    while (l <= mid)
+    {
+        temp.push_back(vec[l]);
+        ++l;
+    }
+    while (r <= end)
+    {
+        temp.push_back(vec[r]);
+        ++r;
+    }
+    for (int i = 0; i < temp.size(); ++i)
+    {
+        vec[start + i] = temp[i];
+    }
+};
+void merge_sort(vector<int> &vec, int start, int end)
+{
+    if (start >= end)
+        return;
+    int mid = (start + end) / 2;
+    merge_sort(vec, start, mid);
+    merge_sort(vec, mid + 1, end);
+    merge(vec, start, mid, end);
+};
+
 void print(const vector<int> &vec)
 {
     for (int i = 0; i < static_cast<int>(vec.size()); ++i)
@@ -46,12 +89,18 @@ int main()
 {
     vector<int> a = {5, 6, 3, 9, 2, 1};
     vector<int> b = {45, 3, 2342, 1, 33, 2};
+    vector<int> c = {343, 1, 234, 2, 3, 4, 3};
+
     print(a);
     print(b);
+    print(c);
     cout << endl;
     insertion_sort(a);
     selection_sort(b);
+    merge_sort(c, 0, c.size() - 1);
+
     print(a);
     print(b);
+    print(c);
     return 0;
 }
